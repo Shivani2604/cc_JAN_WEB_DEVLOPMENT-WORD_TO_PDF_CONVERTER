@@ -1,0 +1,20 @@
+private PDFCreator.clsPDFCreator m_PDFCreator;
+private void CreatePDF(string filename)
+{
+	//Check that the file is printable
+	if (!m_PDFCreator.cIsPrintable(filename)) {
+		throw new Exception(filename + " is not printable.");
+	}
+	//Check that the file exists
+	if (System.IO.File.Exists(filename)) {
+		string strDefaultPrinter = null;
+		strDefaultPrinter = m_PDFCreator.cDefaultPrinter;
+		m_PDFCreator.cDefaultPrinter = "PDFCreator";
+		if (m_PDFCreator.cPrinterStop)
+			m_PDFCreator.cPrinterStop = false;
+		m_PDFCreator.cPrintFile(filename);
+		m_PDFCreator.cDefaultPrinter = strDefaultPrinter;
+	} else {
+		throw new Exception(filename + " does not exist.");
+	}
+}
